@@ -1,13 +1,12 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import joblib
 import numpy as np
 
+# Create the Flask app
 app = Flask(__name__)
 
-# Load the models
+# Load the classifier model
 reg_model = joblib.load('fish_weight_predictor.pkl')
-clf_model = joblib.load('fish_species_classifier.pkl')
-
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -25,18 +24,6 @@ def predict_weight():
     
     return render_template('index.html', prediction_text=f'Estimated Fish Weight: {output} grams')
 
-@app.route('/predict_species', methods=['POST'])
-def predict_species():
-    # Extracting input feature values
-    input_features = [float(x) for x in request.form.values()]
-    features = [np.array(input_features)]
-    
-    # Predicting
-    prediction = clf_model.predict(features)
-    
-    species = prediction[0]
-    
-    return render_template('index.html', prediction_text=f'Predicted Fish Species: {species}')
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
