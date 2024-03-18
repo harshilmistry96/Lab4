@@ -5,3 +5,4 @@ pandas==1.2.4
 scikit-learn==0.24.2
 joblib==1.0.1
 setuptools>=69.2.0
+pip>=21.0
